@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Applications - Job Portal</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1><a href="index.html">Job Portal</a></h1>
+    <div class="header-right">
+      <button id="theme-toggle" title="Toggle Dark/Light Mode">🌙</button>
+      <div id="user-info" class="user-info"></div>
+      <nav>
+        <a href="index.html" class="btn-nav">Home</a>
+        <a href="account.html" class="btn-nav">Account</a>
+        <a href="post-job.html" class="btn-nav">Post Job</a>
+        <button id="btn-logout" class="btn-nav">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="message" class="message hidden"></div>
+
+    <section class="card">
+      <h2>Applications Received</h2>
+      <p style="margin-bottom:20px;color:#666;">View applications for jobs you've posted</p>
+      <div id="applications-list" class="applications-list">
+        <p class="loading">Loading applications...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>Job Portal System • Powered by Supabase</small>
+  </footer>
+
+  <script src="JS/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="JS/theme.js"></script>
+  <script src="JS/utils.js"></script>
+  <script src="JS/my-applications.js"></script>
+</body>
+</html>

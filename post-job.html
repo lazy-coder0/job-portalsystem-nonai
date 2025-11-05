@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Post Job - Job Portal</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1><a href="index.html">Job Portal</a></h1>
+    <div class="header-right">
+      <button id="theme-toggle" title="Toggle Dark/Light Mode">🌙</button>
+      <div id="user-info" class="user-info"></div>
+      <nav>
+        <a href="index.html" class="btn-nav">Home</a>
+        <a href="account.html" class="btn-nav">Account</a>
+        <a href="my-applications.html" class="btn-nav">My Applications</a>
+        <button id="btn-logout" class="btn-nav">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="message" class="message hidden"></div>
+
+    <section class="card" style="max-width:700px;margin:40px auto;">
+      <h2>Post a Job</h2>
+      <form id="post-form">
+        <label>Job Title<input type="text" id="job-title" required placeholder="e.g. Senior Developer" /></label>
+        <label>Company Name<input type="text" id="job-company" required placeholder="e.g. Acme Corp" /></label>
+        <label>Company Location<input type="text" id="job-location" required placeholder="e.g. Remote, NYC" /></label>
+        <label>Job Description<textarea id="job-desc" rows="6" required placeholder="Describe the role, requirements, responsibilities..."></textarea></label>
+        <label>Employment Type
+          <select id="job-type">
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Contract">Contract</option>
+            <option value="Internship">Internship</option>
+          </select>
+        </label>
+        <label>Salary Range (optional)<input type="text" id="job-salary" placeholder="e.g. $80k - $120k" /></label>
+        <button type="submit" class="btn-primary">Post Job</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>Job Portal System • Powered by Supabase</small>
+  </footer>
+
+  <script src="JS/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="JS/theme.js"></script>
+  <script src="JS/utils.js"></script>
+  <script src="JS/post-job.js"></script>
+</body>
+</html>

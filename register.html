@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register - Job Portal</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1><a href="index.html">Job Portal</a></h1>
+    <div class="header-right">
+      <button id="theme-toggle" title="Toggle Dark/Light Mode">🌙</button>
+      <nav>
+        <a href="index.html" class="btn-nav">Home</a>
+        <a href="login.html" class="btn-nav">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="message" class="message hidden"></div>
+
+    <section class="card" style="max-width:500px;margin:40px auto;">
+      <h2>Create Account</h2>
+      <form id="register-form">
+        <label>Full Name<input type="text" id="reg-name" required placeholder="John Doe" /></label>
+        <label>Email<input type="email" id="reg-email" required placeholder="you@example.com" /></label>
+        <label>Phone<input type="tel" id="reg-phone" placeholder="Optional" /></label>
+        <label>Password<input type="password" id="reg-password" required placeholder="min 6 characters" /></label>
+        <button type="submit" class="btn-primary">Register</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;">
+        Already have an account? <a href="login.html" style="color:#667eea;text-decoration:none;">Login here</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>Job Portal System • Powered by Supabase</small>
+  </footer>
+
+  <script src="JS/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="JS/theme.js"></script>
+  <script src="JS/utils.js"></script>
+  <script src="JS/register.js"></script>
+</body>
+</html>

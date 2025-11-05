@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Job Portal - Find Your Dream Job</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1><a href="index.html">Job Portal</a></h1>
+    <div class="header-right">
+      <button id="theme-toggle" title="Toggle Dark/Light Mode">🌙</button>
+      <div id="user-info" class="user-info hidden"></div>
+      <nav id="guest-nav">
+        <a href="login.html" class="btn-nav">Login</a>
+        <a href="register.html" class="btn-nav">Register</a>
+      </nav>
+      <nav id="user-nav" style="display:none;">
+        <a href="account.html" class="btn-nav">Account</a>
+        <a href="post-job.html" class="btn-nav">Post Job</a>
+        <a href="my-applications.html" class="btn-nav">My Applications</a>
+        <button id="btn-logout" class="btn-nav">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="message" class="message hidden"></div>
+
+    <section id="jobs-area">
+      <h2>Available Jobs</h2>
+      <div id="jobs-list" class="jobs-list">
+        <p class="loading">Loading jobs...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>Job Portal System • Powered by Supabase</small>
+  </footer>
+
+  <script src="JS/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="JS/theme.js"></script>
+  <script src="JS/utils.js"></script>
+  <script src="JS/home.js"></script>
+</body>
+</html>

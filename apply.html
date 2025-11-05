@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Apply for Job - Job Portal</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1><a href="index.html">Job Portal</a></h1>
+    <div class="header-right">
+      <button id="theme-toggle" title="Toggle Dark/Light Mode">🌙</button>
+      <div id="user-info" class="user-info"></div>
+      <nav>
+        <a href="index.html" class="btn-nav">Home</a>
+        <a href="account.html" class="btn-nav">Account</a>
+        <button id="btn-logout" class="btn-nav">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="message" class="message hidden"></div>
+
+    <section class="card" style="max-width:700px;margin:40px auto;">
+      <h2>Apply for Job</h2>
+      <div id="job-details" style="background:#f5f5f5;padding:16px;border-radius:8px;margin-bottom:24px;">
+        <p class="loading">Loading job details...</p>
+      </div>
+      
+      <form id="apply-form">
+        <label>Full Name<input type="text" id="apply-name" required /></label>
+        <label>Email<input type="email" id="apply-email" required /></label>
+        <label>Phone<input type="tel" id="apply-phone" placeholder="Optional" /></label>
+        <label>Cover Letter<textarea id="apply-cover" rows="6" placeholder="Why are you interested in this role? What makes you a great fit?"></textarea></label>
+        <label>Upload Resume (PDF only)<input type="file" id="apply-resume" accept=".pdf" required /></label>
+        <button type="submit" class="btn-primary">Submit Application</button>
+        <a href="index.html" class="btn-secondary" style="display:inline-block;text-align:center;margin-top:8px;">Cancel</a>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>Job Portal System • Powered by Supabase</small>
+  </footer>
+
+  <script src="JS/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="JS/theme.js"></script>
+  <script src="JS/utils.js"></script>
+  <script src="JS/apply.js"></script>
+</body>
+</html>

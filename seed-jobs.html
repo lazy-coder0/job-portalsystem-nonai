@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seed Database - Job Portal</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h1 { color: #667eea; margin-bottom: 20px; }
+    h2 { color: #555; margin-top: 30px; }
+    button {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 20px 0;
+    }
+    button:hover { background: #218838; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    #log {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 6px;
+      border-left: 4px solid #667eea;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .info {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+      padding: 12px;
+      border-radius: 6px;
+      margin: 15px 0;
+    }
+    .success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      padding: 12px;
+      border-radius: 6px;
+      margin: 15px 0;
+    }
+    ul {
+      line-height: 1.8;
+      color: #555;
+    }
+    .job-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .job-item {
+      background: #f0f4ff;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      border-left: 3px solid #667eea;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 Populate Database with Real Job Postings</h1>
+    
+    <div class="info">
+      <strong>ℹ️ What this does:</strong>
+      <p>This will add 20 real job postings to your database from various industries and locations including:</p>
+      <ul>
+        <li>Full Stack & Frontend Development roles</li>
+        <li>Mobile App Development (Flutter, React Native)</li>
+        <li>Data Science & AI positions</li>
+        <li>Digital Marketing & Content Writing</li>
+        <li>DevOps & Cloud Engineering</li>
+        <li>Design (UI/UX, Graphic Design)</li>
+        <li>And many more...</li>
+      </ul>
+    </div>
+
+    <h2>📋 Sample Jobs to be Added:</h2>
+    <div class="job-list">
+      <div class="job-item">Full Stack Developer (MERN)</div>
+      <div class="job-item">UI/UX Designer - Mobile Apps</div>
+      <div class="job-item">Python Developer - Data Science</div>
+      <div class="job-item">Content Writer - Tech Blog</div>
+      <div class="job-item">Frontend Developer - React.js</div>
+      <div class="job-item">Digital Marketing Intern</div>
+      <div class="job-item">DevOps Engineer - AWS/Docker</div>
+      <div class="job-item">Mobile App Developer - Flutter</div>
+      <div class="job-item">Graphic Designer - Social Media</div>
+      <div class="job-item">Business Analyst - Fintech</div>
+      <div class="job-item">Video Editor - YouTube Content</div>
+      <div class="job-item">Cybersecurity Analyst</div>
+      <div class="job-item">WordPress Developer</div>
+      <div class="job-item">Data Entry Specialist</div>
+      <div class="job-item">SEO Specialist</div>
+      <div class="job-item">Customer Support Executive</div>
+      <div class="job-item">Blockchain Developer - Solidity</div>
+      <div class="job-item">Human Resources Manager</div>
+      <div class="job-item">Social Media Manager</div>
+      <div class="job-item">Game Developer - Unity 3D</div>
+    </div>
+
+    <button id="seedBtn" onclick="seedDatabase()">🌱 Add Jobs to Database</button>
+    <button onclick="window.location.href='index.html'">🏠 Go to Homepage</button>
+
+    <h2>📝 Log:</h2>
+    <div id="log">Click the button above to start...</div>
+  </div>
+
+  <script src="JS/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+async function seedDatabase() {
+  const logEl = document.getElementById('log');
+  const btn = document.getElementById('seedBtn');
+  
+  btn.disabled = true;
+  btn.textContent = '⏳ Processing...';
+  logEl.textContent = '';
+
+  function log(message) {
+    logEl.textContent += message + '\n';
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  const { SUPABASE_URL, SUPABASE_ANON_KEY } = window.APP_CONFIG || {};
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const sampleJobs = [
+    {
+      title: "Full Stack Developer (MERN Stack)",
+      company: "TechCorp Solutions",
+      location: "Remote, India",
+      description: "We're seeking a talented Full Stack Developer with expertise in MongoDB, Express.js, React, and Node.js. You'll work on building scalable web applications for our clients. Requirements: 2+ years experience with MERN stack, strong problem-solving skills, experience with REST APIs, Git version control. Preferred: AWS/Azure knowledge, Agile methodology experience. Benefits: Competitive salary, flexible work hours, health insurance, learning opportunities.",
+      employment_type: "Full-time",
+      salary_range: "₹6-10 LPA"
+    },
+    {
+      title: "UI/UX Designer - Mobile Apps",
+      company: "DesignHub Agency",
+      location: "Bangalore, Karnataka",
+      description: "Join our creative team as a UI/UX Designer specializing in mobile applications. You'll create intuitive and visually appealing designs for iOS and Android apps. Requirements: 3+ years of UI/UX design experience, proficiency in Figma, Adobe XD, Sketch. Strong portfolio showcasing mobile app designs. Understanding of Material Design and iOS Human Interface Guidelines. Excellent communication skills.",
+      employment_type: "Full-time",
+      salary_range: "₹8-15 LPA"
+    },
+    {
+      title: "Python Developer - Data Science",
+      company: "DataMinds Analytics",
+      location: "Hyderabad, Telangana",
+      description: "Looking for a Python Developer to work on data science and machine learning projects. Responsibilities include developing ML models, data preprocessing, and API development. Requirements: Strong Python programming, experience with pandas, NumPy, scikit-learn, TensorFlow or PyTorch. Knowledge of SQL databases. 2+ years experience in data science or ML engineering.",
+      employment_type: "Full-time",
+      salary_range: "₹7-12 LPA"
+    },
+    {
+      title: "Content Writer - Tech Blog",
+      company: "Digital Marketing Pro",
+      location: "Remote",
+      description: "We need a talented Content Writer to create engaging articles for our technology blog. You'll research and write about latest tech trends, software reviews, and tutorials. Requirements: Excellent English writing skills, ability to explain complex topics simply, SEO knowledge, 1+ year of content writing experience. Portfolio required. Preferred: Technical background, experience with WordPress.",
+      employment_type: "Part-time",
+      salary_range: "₹20,000-35,000/month"
+    },
+    {
+      title: "Frontend Developer - React.js",
+      company: "WebCraft Studios",
+      location: "Pune, Maharashtra",
+      description: "Join our team as a React.js Frontend Developer. Build responsive and performant web applications using modern frontend technologies. Requirements: 2+ years with React.js, strong JavaScript (ES6+), HTML5, CSS3. Experience with Redux, React Hooks, responsive design. Familiarity with RESTful APIs. Good understanding of web performance optimization.",
+      employment_type: "Full-time",
+      salary_range: "₹5-9 LPA"
+    },
+    {
+      title: "Digital Marketing Intern",
+      company: "GrowthHackers Marketing",
+      location: "Delhi NCR",
+      description: "Exciting internship opportunity for aspiring digital marketers! Learn and work on real campaigns including SEO, social media marketing, email marketing, and content strategy. Requirements: Currently pursuing or recently completed degree in Marketing/Business. Basic understanding of digital marketing concepts. Excellent communication skills. Passion for learning and analytics.",
+      employment_type: "Internship",
+      salary_range: "₹10,000-15,000/month + Certificate"
+    },
+    {
+      title: "DevOps Engineer - AWS/Docker",
+      company: "CloudOps Technologies",
+      location: "Mumbai, Maharashtra",
+      description: "We're hiring a DevOps Engineer to manage our cloud infrastructure and CI/CD pipelines. You'll work with AWS services, Docker, Kubernetes, and automation tools. Requirements: 3+ years DevOps experience, strong AWS knowledge, experience with Docker and Kubernetes, CI/CD tools (Jenkins, GitLab CI), infrastructure as code (Terraform). Linux administration skills.",
+      employment_type: "Full-time",
+      salary_range: "₹10-18 LPA"
+    },
+    {
+      title: "Mobile App Developer - Flutter",
+      company: "AppInnovate",
+      location: "Remote, Worldwide",
+      description: "Looking for a skilled Flutter developer to build cross-platform mobile applications. Create beautiful, high-performance apps for both iOS and Android. Requirements: 2+ years Flutter/Dart experience, published apps on App Store/Play Store, state management (Provider, Bloc, Riverpod), RESTful API integration, Firebase experience. Good design sense.",
+      employment_type: "Contract",
+      salary_range: "$25-45/hour"
+    },
+    {
+      title: "Graphic Designer - Social Media",
+      company: "CreativeMinds Studio",
+      location: "Chennai, Tamil Nadu",
+      description: "Join our creative team as a Graphic Designer focused on social media content. Design eye-catching graphics for Instagram, Facebook, LinkedIn, and other platforms. Requirements: 2+ years graphic design experience, expert in Adobe Creative Suite (Photoshop, Illustrator, Premiere Pro), understanding of social media trends, ability to work on multiple projects. Portfolio mandatory.",
+      employment_type: "Full-time",
+      salary_range: "₹4-7 LPA"
+    },
+    {
+      title: "Business Analyst - Fintech",
+      company: "FinVentures",
+      location: "Bangalore, Karnataka",
+      description: "Seeking a Business Analyst for our fintech startup. You'll work on product requirements, data analysis, and process optimization. Requirements: 3+ years as Business Analyst, strong analytical skills, experience with SQL, Excel, data visualization tools (Tableau, Power BI). Understanding of financial services is a plus. Excellent stakeholder management.",
+      employment_type: "Full-time",
+      salary_range: "₹8-14 LPA"
+    },
+    {
+      title: "Video Editor - YouTube Content",
+      company: "ContentCrafters Media",
+      location: "Remote",
+      description: "We need a creative Video Editor for YouTube content creation. Edit engaging videos including cuts, transitions, effects, color grading, and audio mixing. Requirements: 2+ years video editing experience, proficiency in Adobe Premiere Pro, After Effects, Final Cut Pro. Understanding of YouTube algorithms and trends. Fast turnaround time. Portfolio required.",
+      employment_type: "Part-time",
+      salary_range: "₹25,000-50,000/month"
+    },
+    {
+      title: "Cybersecurity Analyst",
+      company: "SecureNet Solutions",
+      location: "Noida, UP",
+      description: "Join our cybersecurity team to protect our clients' digital assets. Conduct security assessments, monitor threats, and implement security measures. Requirements: 3+ years in cybersecurity, knowledge of security frameworks (ISO 27001, NIST), experience with SIEM tools, penetration testing, incident response. Relevant certifications (CEH, CISSP) preferred.",
+      employment_type: "Full-time",
+      salary_range: "₹9-16 LPA"
+    },
+    {
+      title: "WordPress Developer",
+      company: "WebSolutions Inc",
+      location: "Ahmedabad, Gujarat",
+      description: "Looking for an experienced WordPress Developer to build and maintain client websites. Custom theme development, plugin integration, and optimization. Requirements: 3+ years WordPress development, strong PHP, HTML, CSS, JavaScript, experience with WooCommerce, page builders (Elementor, Divi), website optimization, security best practices.",
+      employment_type: "Full-time",
+      salary_range: "₹4-8 LPA"
+    },
+    {
+      title: "Data Entry Specialist",
+      company: "DataPro Services",
+      location: "Remote",
+      description: "We're hiring Data Entry Specialists for accurate and efficient data management. Enter data from various sources into company database, maintain records, verify accuracy. Requirements: Fast typing speed (40+ WPM), attention to detail, proficiency in MS Excel, good time management, reliable internet connection. No experience required - training provided.",
+      employment_type: "Part-time",
+      salary_range: "₹12,000-20,000/month"
+    },
+    {
+      title: "SEO Specialist",
+      company: "RankBoost Digital",
+      location: "Jaipur, Rajasthan",
+      description: "Join our team as an SEO Specialist to drive organic traffic growth for our clients. Conduct keyword research, on-page and off-page optimization, technical SEO audits. Requirements: 2+ years SEO experience, knowledge of Google Analytics, Search Console, SEMrush or Ahrefs, understanding of latest SEO trends, content optimization skills. Proven track record of ranking improvements.",
+      employment_type: "Full-time",
+      salary_range: "₹5-9 LPA"
+    },
+    {
+      title: "Customer Support Executive",
+      company: "SupportHub",
+      location: "Remote, India",
+      description: "We're seeking friendly and patient Customer Support Executives to assist our users. Handle customer queries via email, chat, and phone. Requirements: Excellent English communication (verbal and written), problem-solving skills, empathy, ability to multitask, basic computer knowledge. Previous customer service experience preferred. Flexible shift timings including night shifts.",
+      employment_type: "Full-time",
+      salary_range: "₹3-5 LPA"
+    },
+    {
+      title: "Blockchain Developer - Solidity",
+      company: "CryptoTech Labs",
+      location: "Bangalore, Karnataka",
+      description: "Exciting opportunity for a Blockchain Developer to work on Web3 projects. Develop smart contracts, DApps, and blockchain solutions. Requirements: 2+ years blockchain development, strong Solidity programming, experience with Ethereum, Web3.js, Hardhat or Truffle, understanding of DeFi and NFTs. Knowledge of other blockchain platforms (Polygon, Binance Smart Chain) is a plus.",
+      employment_type: "Full-time",
+      salary_range: "₹12-22 LPA"
+    },
+    {
+      title: "Human Resources Manager",
+      company: "TalentFirst HR Solutions",
+      location: "Gurgaon, Haryana",
+      description: "Looking for an experienced HR Manager to lead our recruitment and employee management. Handle end-to-end recruitment, employee relations, performance management, policy development. Requirements: 5+ years HR experience, strong understanding of labor laws, excellent interpersonal skills, experience with HRMS software, MBA in HR preferred. Team management experience mandatory.",
+      employment_type: "Full-time",
+      salary_range: "₹7-12 LPA"
+    },
+    {
+      title: "Social Media Manager",
+      company: "BrandBuilders Agency",
+      location: "Mumbai, Maharashtra",
+      description: "We need a creative Social Media Manager to manage multiple client accounts. Develop content strategies, create engaging posts, manage campaigns, analyze metrics. Requirements: 3+ years social media management, experience with all major platforms, content creation skills, knowledge of social media analytics tools, understanding of paid advertising (Facebook Ads, Instagram Ads). Creativity and trend awareness essential.",
+      employment_type: "Full-time",
+      salary_range: "₹6-10 LPA"
+    },
+    {
+      title: "Game Developer - Unity 3D",
+      company: "GameCraft Studios",
+      location: "Kolkata, West Bengal",
+      description: "Join our game development team to create exciting mobile and PC games using Unity 3D. Implement gameplay features, optimize performance, collaborate with designers and artists. Requirements: 2+ years Unity game development, strong C# programming, experience publishing games, understanding of game physics and AI, 3D math knowledge. Portfolio of completed games required.",
+      employment_type: "Full-time",
+      salary_range: "₹5-10 LPA"
+    }
+  ];
+
+  log('🚀 Starting to populate database with real job postings...\n');
+
+  try {
+    const companies = [...new Set(sampleJobs.map(job => job.company))];
+    const companyMap = {};
+
+    log(`📦 Processing ${companies.length} companies...\n`);
+
+    for (const companyName of companies) {
+      const { data: existingCompany } = await supabase
+        .from('companies')
+        .select('id, name')
+        .eq('name', companyName)
+        .maybeSingle();
+
+      if (existingCompany) {
+        companyMap[companyName] = existingCompany.id;
+        log(`✓ Company "${companyName}" already exists`);
+      } else {
+        const jobData = sampleJobs.find(j => j.company === companyName);
+        
+        const { data: newCompany, error: companyError } = await supabase
+          .from('companies')
+          .insert([{
+            name: companyName,
+            location: jobData.location,
+            owner_id: null
+          }])
+          .select()
+          .single();
+
+        if (companyError) {
+          log(`❌ Error creating company "${companyName}": ${companyError.message}`);
+          continue;
+        }
+
+        companyMap[companyName] = newCompany.id;
+        log(`✓ Created company "${companyName}"`);
+      }
+    }
+
+    log(`\n📋 Processing ${sampleJobs.length} job postings...\n`);
+
+    let successCount = 0;
+    let skipCount = 0;
+
+    for (const job of sampleJobs) {
+      const companyId = companyMap[job.company];
+      
+      if (!companyId) {
+        log(`⚠ Skipping job "${job.title}" - company not found`);
+        skipCount++;
+        continue;
+      }
+
+      const { data: existingJob } = await supabase
+        .from('jobs')
+        .select('id')
+        .eq('title', job.title)
+        .eq('company_id', companyId)
+        .maybeSingle();
+
+      if (existingJob) {
+        log(`⚠ Job "${job.title}" already exists - skipping`);
+        skipCount++;
+        continue;
+      }
+
+      const jobTypeMap = {
+        'Full-time': 'full_time',
+        'Part-time': 'part_time',
+        'Internship': 'internship',
+        'Contract': 'contract'
+      };
+      
+      const { error: jobError } = await supabase
+        .from('jobs')
+        .insert([{
+          title: job.title,
+          description: job.description,
+          salary_range: job.salary_range,
+          location: job.location,
+          job_type: jobTypeMap[job.employment_type] || 'full_time',
+          company_id: companyId,
+          posted_by: null
+        }]);
+
+      if (jobError) {
+        log(`❌ Error inserting job "${job.title}": ${jobError.message}`);
+      } else {
+        successCount++;
+        log(`✓ Added job: "${job.title}" at ${job.company}`);
+      }
+    }
+
+    log('\n' + '='.repeat(50));
+    log('📊 SUMMARY:');
+    log('='.repeat(50));
+    log(`✅ Successfully added: ${successCount} jobs`);
+    log(`⚠ Skipped (already exist): ${skipCount} jobs`);
+    log(`📦 Total companies: ${Object.keys(companyMap).length}`);
+    log('\n🎉 Database population complete!');
+    log('💡 Go to the homepage to see the new job postings!');
+
+    btn.textContent = '✅ Done! Jobs Added';
+    btn.style.background = '#28a745';
+
+  } catch (error) {
+    log(`\n❌ Fatal error: ${error.message}`);
+    btn.textContent = '❌ Error Occurred';
+    btn.style.background = '#dc3545';
+    btn.disabled = false;
+  }
+}
+  </script>
+</body>
+</html>
