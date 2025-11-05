@@ -30,6 +30,49 @@
 
     <section id="jobs-area">
       <h2>Available Jobs</h2>
+      
+      <!-- Search and Filter Section -->
+      <div class="search-filter-section">
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="🔍 Search jobs by title, description, or location..." />
+        </div>
+        
+        <div class="filters">
+          <select id="job-type-filter">
+            <option value="">All Job Types</option>
+            <option value="full_time">Full-time</option>
+            <option value="part_time">Part-time</option>
+            <option value="internship">Internship</option>
+            <option value="contract">Contract</option>
+          </select>
+          
+          <select id="salary-filter">
+            <option value="">All Salaries</option>
+            <option value="0-5">₹0-5 LPA</option>
+            <option value="5-10">₹5-10 LPA</option>
+            <option value="10-15">₹10-15 LPA</option>
+            <option value="15+">₹15+ LPA</option>
+          </select>
+          
+          <input type="text" id="location-filter" placeholder="📍 Location" list="locations" />
+          <datalist id="locations">
+            <option value="Remote">
+            <option value="Bangalore">
+            <option value="Mumbai">
+            <option value="Hyderabad">
+            <option value="Pune">
+            <option value="Delhi NCR">
+            <option value="Chennai">
+          </datalist>
+          
+          <button id="clear-filters" class="btn-clear">Clear Filters</button>
+        </div>
+        
+        <div class="results-info">
+          <span id="results-count">Loading...</span>
+        </div>
+      </div>
+
       <div id="jobs-list" class="jobs-list">
         <p class="loading">Loading jobs...</p>
       </div>
