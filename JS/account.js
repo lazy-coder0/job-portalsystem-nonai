@@ -1,32 +1,78 @@
 (async function() {
   'use strict';
 
-  const { supabase, showMessage, requireAuth, updateNavigation } = window.appUtils;
+  const { SUPABASE_URL, SUPABASE_ANON_KEY } = window.APP_CONFIG || {};
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const user = await requireAuth();
-  if (!user) return;
-
-  await updateNavigation();
+  const messageEl = document.getElementById('message');
+  
+  // Helper function
+  function showMessage(msg, isError = false) {
+    if (!messageEl) return;
+    messageEl.textContent = msg;
+    messageEl.className = isError ? 'message error' : 'message';
+    messageEl.classList.remove('hidden');
+    setTimeout(() => messageEl.classList.add('hidden'), 5000);
+  }
 
   const profileForm = document.getElementById('profile-form');
   const resumeForm = document.getElementById('resume-form');
   const passwordForm = document.getElementById('password-form');
   const currentResumeDiv = document.getElementById('current-resume');
 
+  // Get current user - REQUIRED
+  async function getCurrentUser() {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const authUser = session?.user;
+      
+      if (!authUser) {
+        showMessage('Please login to access your account', true);
+        setTimeout(() => window.location.href = 'login.html', 2000);
+        return null;
+      }
+      
+      return authUser;
+    } catch (error) {
+      console.error('Error getting user:', error);
+      showMessage('Authentication error. Please login again.', true);
+      setTimeout(() => window.location.href = 'login.html', 2000);
+      return null;
+    }
+  }
+
   // Load user profile
   async function loadProfile() {
     try {
-      const { data: profile, error } = await supabase
-        .from('profiles')
+      const authUser = await getCurrentUser();
+      
+      if (!authUser) {
+        return;
+      }
+
+      console.log('Loading profile for user:', authUser.email);
+
+      // Get user from database
+      const { data: userProfile, error: userError } = await supabase
+        .from('users')
         .select('*')
-        .eq('user_id', user.authUser.id)
+        .eq('email', authUser.email)
         .single();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      console.log('User profile:', userProfile, 'Error:', userError);
 
-      // Populate form fields
-      document.getElementById('full-name').value = user.userProfile.full_name || '';
-      document.getElementById('email').value = user.userProfile.email || '';
+      // Get additional profile data
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', authUser.id)
+        .single();
+
+      console.log('Profile data:', profile, 'Error:', profileError);
+
+      // Populate form fields with user's data
+      document.getElementById('full-name').value = userProfile?.full_name || '';
+      document.getElementById('email').value = authUser.email || '';
       document.getElementById('phone').value = profile?.phone || '';
       document.getElementById('bio').value = profile?.bio || '';
       document.getElementById('skills').value = profile?.skills || '';
@@ -42,9 +88,11 @@
       } else {
         currentResumeDiv.innerHTML = '<p style="color:#999">No resume uploaded yet</p>';
       }
+      
+      showMessage('Profile loaded successfully!');
     } catch (error) {
       console.error('Error loading profile:', error);
-      showMessage('Failed to load profile', true);
+      showMessage('Failed to load profile: ' + error.message, true);
     }
   }
 
@@ -53,6 +101,7 @@
     e.preventDefault();
 
     const fullName = document.getElementById('full-name').value.trim();
+    const email = document.getElementById('email').value.trim();
     const phone = document.getElementById('phone').value.trim();
     const bio = document.getElementById('bio').value.trim();
     const skills = document.getElementById('skills').value.trim();
@@ -60,29 +109,38 @@
     const linkedin = document.getElementById('linkedin').value.trim();
     const portfolio = document.getElementById('portfolio').value.trim();
 
+    if (!email) {
+      showMessage('Email is required', true);
+      return;
+    }
+
     try {
-      // Update users table
-      const { error: userError } = await supabase
-        .from('users')
-        .update({ full_name: fullName })
-        .eq('email', user.authUser.email);
+      const authUser = await getCurrentUser();
+      
+      if (authUser) {
+        // Update users table
+        const { error: userError } = await supabase
+          .from('users')
+          .update({ full_name: fullName })
+          .eq('email', authUser.email);
 
-      if (userError) throw userError;
+        if (userError) throw userError;
 
-      // Upsert profiles table
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .upsert({
-          user_id: user.authUser.id,
-          phone,
-          bio,
-          skills,
-          experience_years: experience,
-          linkedin_url: linkedin,
-          portfolio_url: portfolio
-        }, { onConflict: 'user_id' });
+        // Upsert profiles table
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .upsert({
+            user_id: authUser.id,
+            phone,
+            bio,
+            skills,
+            experience_years: experience,
+            linkedin_url: linkedin,
+            portfolio_url: portfolio
+          }, { onConflict: 'user_id' });
 
-      if (profileError) throw profileError;
+        if (profileError) throw profileError;
+      }
 
       showMessage('Profile updated successfully!');
     } catch (error) {
@@ -94,6 +152,12 @@
   // Upload resume
   resumeForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    const authUser = await getCurrentUser();
+    if (!authUser) {
+      showMessage('Please login to upload resume', true);
+      return;
+    }
 
     const fileInput = document.getElementById('resume-file');
     const file = fileInput.files[0];
@@ -114,7 +178,7 @@
     }
 
     try {
-      const fileName = `resumes/${user.authUser.id}_${Date.now()}_${file.name}`;
+      const fileName = `resumes/${authUser.id}_${Date.now()}_${file.name}`;
       
       const { error: uploadError } = await supabase.storage
         .from('job-portal-files')
@@ -130,7 +194,7 @@
       const { error: profileError } = await supabase
         .from('profiles')
         .upsert({
-          user_id: user.authUser.id,
+          user_id: authUser.id,
           resume_url: publicUrl
         }, { onConflict: 'user_id' });
 
@@ -148,6 +212,12 @@
   // Change password
   passwordForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    const authUser = await getCurrentUser();
+    if (!authUser) {
+      showMessage('Please login to change password', true);
+      return;
+    }
 
     const newPassword = document.getElementById('new-password').value;
     const confirmPassword = document.getElementById('confirm-password').value;

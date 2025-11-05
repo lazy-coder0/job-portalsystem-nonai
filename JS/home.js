@@ -11,15 +11,51 @@
   const locationFilter = document.getElementById('location-filter');
   const clearFiltersBtn = document.getElementById('clear-filters');
   const resultsCount = document.getElementById('results-count');
+  const jobsCountBadge = document.getElementById('jobs-count');
 
   let allJobs = [];
   let filteredJobs = [];
+
+  // Section switching
+  window.showSection = function(section) {
+    const heroSection = document.querySelector('.hero-section');
+    const featuresGrid = document.querySelector('.features-grid');
+    const jobsArea = document.getElementById('jobs-area');
+
+    if (section === 'jobs') {
+      heroSection.classList.add('hidden');
+      featuresGrid.classList.add('hidden');
+      jobsArea.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      heroSection.classList.remove('hidden');
+      featuresGrid.classList.remove('hidden');
+      jobsArea.classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // Close drawer after navigation
+    if (window.toggleDrawer) {
+      const drawer = document.getElementById('side-drawer');
+      if (drawer && drawer.classList.contains('active')) {
+        window.toggleDrawer();
+      }
+    }
+  };
+
+  // Toggle drawer function
+  window.toggleDrawer = function() {
+    const drawer = document.getElementById('side-drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    
+    if (drawer) drawer.classList.toggle('active');
+    if (overlay) overlay.classList.toggle('active');
+  };
 
   // Load and display jobs
   async function loadJobs() {
     try {
       console.log('Starting to load jobs...');
-      jobsListEl.innerHTML = '<p class="loading">Loading jobs...</p>';
       
       console.log('Querying Supabase...');
       const { data: jobs, error } = await supabase
@@ -32,11 +68,13 @@
       if (error) {
         console.error('Supabase error:', error);
         jobsListEl.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+        jobsCountBadge.textContent = 'Error loading';
         return;
       }
 
       if (!jobs || jobs.length === 0) {
         jobsListEl.innerHTML = '<p class="no-data">No jobs available yet. Check back soon!</p>';
+        jobsCountBadge.textContent = '0 Jobs Available';
         return;
       }
 
@@ -45,9 +83,17 @@
       filteredJobs = jobs;
       displayJobs(filteredJobs);
       updateResultsCount();
+      jobsCountBadge.textContent = `${jobs.length} Jobs Available`;
+      
+      // Update drawer badge
+      const drawerJobsCount = document.getElementById('drawer-jobs-count');
+      if (drawerJobsCount) {
+        drawerJobsCount.textContent = jobs.length;
+      }
     } catch (error) {
       console.error('Error loading jobs:', error);
       jobsListEl.innerHTML = `<p class="error">Failed to load jobs. Error: ${error.message}</p>`;
+      jobsCountBadge.textContent = 'Error loading';
     }
   }
 
@@ -158,11 +204,11 @@
   }
 
   // Event listeners
-  searchInput.addEventListener('input', filterJobs);
-  jobTypeFilter.addEventListener('change', filterJobs);
-  salaryFilter.addEventListener('change', filterJobs);
-  locationFilter.addEventListener('input', filterJobs);
-  clearFiltersBtn.addEventListener('click', clearFilters);
+  if (searchInput) searchInput.addEventListener('input', filterJobs);
+  if (jobTypeFilter) jobTypeFilter.addEventListener('change', filterJobs);
+  if (salaryFilter) salaryFilter.addEventListener('change', filterJobs);
+  if (locationFilter) locationFilter.addEventListener('input', filterJobs);
+  if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
 
   // Initial load
   await loadJobs();
