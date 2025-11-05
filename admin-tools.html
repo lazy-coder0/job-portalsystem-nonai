@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Tools - Job Portal</title>
+  <link rel="stylesheet" href="CSS/style.css" />
+  <style>
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .tool-card {
+      background: var(--bg-card);
+      padding: 25px;
+      border-radius: 12px;
+      border: 2px solid var(--border-color);
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-large);
+    }
+    .tool-card h3 {
+      color: var(--text-primary);
+      margin-bottom: 15px;
+    }
+    .tool-card p {
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    .tool-card .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .tool-card .btn:hover {
+      opacity: 0.9;
+    }
+    .tool-card.debug .btn {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    .tool-card.seed .btn {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+    .back-link:hover {
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <h1><a href="index.html">Job Portal</a></h1>
+    <div class="header-right">
+      <button id="theme-toggle" title="Toggle Dark/Light Mode">🌙</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>🛠️ Admin Tools & Utilities</h2>
+    <p style="color: var(--text-secondary);">Access administrative tools and database utilities</p>
+
+    <div class="tools-grid">
+      <div class="tool-card seed">
+        <h3>🌱 Seed Database</h3>
+        <p>Populate your database with 20 real job postings from various companies and industries.</p>
+        <a href="seed-jobs.html" class="btn">Add Sample Jobs</a>
+      </div>
+
+      <div class="tool-card debug">
+        <h3>🔍 Debug Database</h3>
+        <p>Check database connection, view job counts, and diagnose any data loading issues.</p>
+        <a href="debug-jobs.html" class="btn">Run Diagnostics</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>📝 Post a Job</h3>
+        <p>Create and publish a new job posting. Requires login as an employer account.</p>
+        <a href="post-job.html" class="btn">Post New Job</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>👤 Account Management</h3>
+        <p>Manage your profile, update personal details, upload resume, and change password.</p>
+        <a href="account.html" class="btn">Manage Account</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>📋 My Applications</h3>
+        <p>View all your job applications and track their status (pending, reviewed, accepted, rejected).</p>
+        <a href="my-applications.html" class="btn">View Applications</a>
+      </div>
+
+      <div class="tool-card">
+        <h3>🏠 Homepage</h3>
+        <p>Browse all available job listings and apply to positions that match your skills.</p>
+        <a href="index.html" class="btn">View Jobs</a>
+      </div>
+    </div>
+
+    <a href="index.html" class="back-link">← Back to Homepage</a>
+  </main>
+
+  <footer class="site-footer">
+    <small>Job Portal System • Admin Tools</small>
+  </footer>
+
+  <script src="JS/theme.js"></script>
+</body>
+</html>
