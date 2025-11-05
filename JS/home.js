@@ -19,10 +19,6 @@
           companies (
             name,
             location
-          ),
-          users:posted_by (
-            full_name,
-            email
           )
         `)
         .order('created_at', { ascending: false });
