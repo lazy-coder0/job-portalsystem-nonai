@@ -56,6 +56,12 @@
   async function loadJobs() {
     try {
       console.log('Starting to load jobs...');
+      console.log('Supabase URL:', SUPABASE_URL);
+      
+      if (!jobsListEl) {
+        console.error('jobs-list element not found!');
+        return;
+      }
       
       console.log('Querying Supabase...');
       const { data: jobs, error } = await supabase
@@ -68,13 +74,18 @@
       if (error) {
         console.error('Supabase error:', error);
         jobsListEl.innerHTML = `<p class="error">Error: ${error.message}</p>`;
-        jobsCountBadge.textContent = 'Error loading';
+        if (jobsCountBadge) jobsCountBadge.textContent = 'Error loading';
+        const drawerBadge = document.getElementById('drawer-jobs-count');
+        if (drawerBadge) drawerBadge.textContent = '!';
         return;
       }
 
       if (!jobs || jobs.length === 0) {
+        console.warn('No jobs found in database');
         jobsListEl.innerHTML = '<p class="no-data">No jobs available yet. Check back soon!</p>';
-        jobsCountBadge.textContent = '0 Jobs Available';
+        if (jobsCountBadge) jobsCountBadge.textContent = '0 Jobs Available';
+        const drawerBadge = document.getElementById('drawer-jobs-count');
+        if (drawerBadge) drawerBadge.textContent = '0';
         return;
       }
 
@@ -83,7 +94,7 @@
       filteredJobs = jobs;
       displayJobs(filteredJobs);
       updateResultsCount();
-      jobsCountBadge.textContent = `${jobs.length} Jobs Available`;
+      if (jobsCountBadge) jobsCountBadge.textContent = `${jobs.length} Jobs Available`;
       
       // Update drawer badge
       const drawerJobsCount = document.getElementById('drawer-jobs-count');
@@ -92,8 +103,8 @@
       }
     } catch (error) {
       console.error('Error loading jobs:', error);
-      jobsListEl.innerHTML = `<p class="error">Failed to load jobs. Error: ${error.message}</p>`;
-      jobsCountBadge.textContent = 'Error loading';
+      if (jobsListEl) jobsListEl.innerHTML = `<p class="error">Failed to load jobs. Error: ${error.message}</p>`;
+      if (jobsCountBadge) jobsCountBadge.textContent = 'Error loading';
     }
   }
 

@@ -15,11 +15,11 @@
       <button class="drawer-close" onclick="toggleDrawer()">✕</button>
     </div>
     <div class="drawer-content">
-      <a href="#" class="drawer-item" onclick="showSection('home'); toggleDrawer();">
+      <a href="index.html" class="drawer-item" onclick="showSection('home'); return false;">
         <span class="drawer-icon">🏠</span>
         <span class="drawer-text">Home</span>
       </a>
-      <a href="#" class="drawer-item" onclick="showSection('jobs'); toggleDrawer();">
+      <a href="javascript:void(0)" class="drawer-item" onclick="showSection('jobs');">
         <span class="drawer-icon">💼</span>
         <span class="drawer-text">Available Jobs</span>
         <span class="drawer-badge" id="drawer-jobs-count">0</span>
